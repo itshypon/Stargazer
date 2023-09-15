@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 
 function App() {
 
   const [inputValue, changeInput] = useState('')
   const [gData, setgData] = useState([])
+  const [dataFetched, setDataFetched] = useState(false)
 
   const handleChange = (e)=>{
     changeInput(e.target.value)
@@ -23,6 +24,7 @@ function App() {
       const data = await res.json();
       const result = data.map(({ user:{login}, starred_at }) => ({ login, starred_at }));
       setgData(result);
+      setDataFetched(true);
 
     }
     catch(error){
@@ -30,28 +32,32 @@ function App() {
     }
   }
 
-  const filteredData = gData.filter(({ starred_at }) => starred_at.startsWith('2023-09-13'));
+  const filteredData = gData.filter(({ starred_at }) => starred_at.startsWith('2023'));
 
   return (
     <>
     <header>
-      <div className="flex justify-center py-2">
-        StarGazer
+      <div className="flex justify-center py-2 text-6xl my-4">
+        Star<span className="text-[#1D63FF]">G</span>azer
       </div>
     </header>
-    <div className="main px-5 sm:px-10">
-      <input type="text" className="p-4 m-6 rounded border-2" value={inputValue} onChange={handleChange} />
-      <button onClick={fetchData}>Submit</button>
-   
-    
-    <ul className="">
+    <div className="main px-5 sm:px-10 flex justify-center my-4">
+      <input type="text" className="p-4 m-6 rounded border-2 border-black" value={inputValue} onChange={handleChange} />
+      </div>
+      <div className="flex justify-center">
+      <button className="bg-black text-white border rounded-lg border-black p-2" onClick={fetchData}>Submit</button>
+      </div>
+      {dataFetched && (
+    <div className="flex justify-center my-6">
+    <ul className="border-2 border-black rounded p-4">
       {filteredData.map(({login, starred_at}, index)=>(
         <li key={index}>
-          {index} - {login}
+          {index + 1} - {login}
         </li>
       ))}
     </ul>
-    </div>
+    </div>)}
+    
     </>
   )
 }
