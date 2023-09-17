@@ -32,7 +32,7 @@ function App() {
     }
   }
 
-  const filteredData = gData.filter(({ starred_at }) => starred_at.startsWith('2023'));
+  const filteredData = gData.filter(({ starred_at }) => starred_at.startsWith('2023-09-18'));
 
   return (
     <>
